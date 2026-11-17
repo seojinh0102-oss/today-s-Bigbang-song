@@ -89,14 +89,14 @@
 
   <div class="date" id="date"></div>
 
-  <h1>Today's Pick</h1>
+  <h1>오늘의 빅뱅 노래</h1>
 
   <h2 class="song-title" id="title"></h2>
 
   <div class="artist" id="artist"></div>
 
   <p class="description">
-    오늘의 빅뱅 노래<br>
+    일본곡, 멤버 솔로곡 포함<br>
     BIGBANG is the best
   </p>
 
@@ -113,17 +113,17 @@
 const songs = [
   {
     title: "BiiiG",
-    artist: "BIGBANG•BiiiG",
+    artist: "BIGBANG•[BiiiG]•2026",
     youtube: "https://youtu.be/L8ZnXgbyUuc"
   },
   {
     title: "꽃 길",
-    artist: "BIGBANG•꽃 길",
+    artist: "BIGBANG•[꽃 길]•2018",
     youtube: "https://youtu.be/VWqxvBQKwKQ"
   },
   {
     title: "봄여름가을겨울 (Still Life)",
-    artist: "BIGBANG•봄여름가을겨울 (Still Life)",
+    artist: "BIGBANG•[봄여름가을겨울 (Still Life)]•2022",
     youtube: "https://youtu.be/eN5mG_yMDiM"
   }
 ];
@@ -160,7 +160,7 @@ document.getElementById("title").textContent =
 
 document.getElementById("artist").textContent =
   song.artist;
-
+  
 document.getElementById("youtube").href =
   song.youtube ||
   "https://www.youtube.com/results?search_query=" +
