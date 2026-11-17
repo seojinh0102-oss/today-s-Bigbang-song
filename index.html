@@ -6,79 +6,79 @@
 <title>Today's BIGBANG Song</title>
 
 <style>
-  * {
-    box-sizing: border-box;
-  }
+* {
+  box-sizing: border-box;
+}
 
-  body {
-    margin: 0;
-    min-height: 100vh;
-    background: #f5f3ef;
-    color: #292929;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 24px;
-  }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #FFE561;
+  color: #292929;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
 
-  .container {
-    width: 100%;
-    max-width: 440px;
-    text-align: center;
-  }
+.container {
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+}
 
-  .logo {
-    font-size: 13px;
-    letter-spacing: 5px;
-    margin-bottom: 48px;
-  }
+.logo {
+  font-size: 13px;
+  letter-spacing: 5px;
+  margin-bottom: 48px;
+}
 
-  .date {
-    font-size: 13px;
-    color: #888;
-    letter-spacing: 2px;
-  }
+.date {
+  font-size: 13px;
+  color: #B37800;
+  letter-spacing: 2px;
+}
 
-  h1 {
-    font-size: 20px;
-    margin: 15px 0 15px;
-  }
- 
-  .song-title {
-    font-size: 50px;
-    margin: 8px 0 8px;
-  }
+h1 {
+  font-size: 20px;
+  margin: 15px 0 8px;
+}
 
-  .artist {
-    color: #888;
-    font-size: 15px;
-  }
+.song-title {
+  font-size: 50px;
+  margin: 8px 0;
+}
 
-  .description {
-    font-size: 13px;
-    color: #777;
-    line-height: 1.7;
-    margin: 25px 0;
-  }
+.artist {
+  color: #835800;
+  font-size: 15px;
+}
 
-  .youtube {
-    display: block;
-    background: #292929;
-    color: white;
-    text-decoration: none;
-    padding: 16px;
-    border-radius: 5px;
-    font-size: 13px;
-    letter-spacing: 2px;
-  }
+.description {
+  font-size: 10px;
+  color: #B37800;
+  line-height: 1.7;
+  margin: 25px 0;
+}
 
-  .footer {
-    margin-top: 35px;
-    color: #aaa;
-    font-size: 11px;
-    letter-spacing: 2px;
-  }
+.youtube {
+  display: block;
+  background: #292929;
+  color: white;
+  text-decoration: none;
+  padding: 16px;
+  border-radius: 5px;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.footer {
+  margin-top: 35px;
+  color: #B37800;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
 </style>
 </head>
 
@@ -128,27 +128,37 @@ const songs = [
   }
 ];
 
-// 한국 날짜 기준으로 오늘의 날짜 계산
-const now = new Date();
+// 한국 날짜 가져오기
+function getKoreanDate() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date());
+}
 
-const dateText = new Intl.DateTimeFormat("en-CA", {
-  timeZone: "Asia/Seoul",
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit"
-}).format(now);
+// 날짜를 기반으로 랜덤 시드 생성
+function seededRandom(seed) {
+  let value = seed;
 
-const [year, month, day] = dateText.split("-").map(Number);
+  return function() {
+    value = (value * 9301 + 49297) % 233280;
+    return value / 233280;
+  };
+}
 
-// 2026년 1월 1일부터 지난 날짜 수
-const start = Date.UTC(2026, 0, 1);
-const today = Date.UTC(year, month - 1, day);
+// 오늘의 날짜
+const dateText = getKoreanDate();
 
-const days = Math.floor((today - start) / 86400000);
+// 날짜를 숫자로 변환
+const dateSeed = Number(dateText.replaceAll("-", ""));
 
-// 날짜에 따라 노래 선택
-const index = ((days % songs.length) + songs.length)
-  % songs.length;
+// 오늘만의 랜덤 생성기
+const random = seededRandom(dateSeed);
+
+// 랜덤으로 노래 선정
+const index = Math.floor(random() * songs.length);
 
 const song = songs[index];
 
@@ -160,11 +170,12 @@ document.getElementById("title").textContent =
 
 document.getElementById("artist").textContent =
   song.artist;
-  
+
 document.getElementById("youtube").href =
   song.youtube ||
   "https://www.youtube.com/results?search_query=" +
   encodeURIComponent(song.title + " " + song.artist);
+
 </script>
 </body>
 </html>
