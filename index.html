@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAILY SONG</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #f5f3ef;
+    color: #292929;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+  }
+
+  .logo {
+    font-size: 13px;
+    letter-spacing: 5px;
+    margin-bottom: 48px;
+  }
+
+  .date {
+    font-size: 13px;
+    color: #888;
+    letter-spacing: 2px;
+  }
+
+  h1 {
+    font-size: 32px;
+    margin: 15px 0 30px;
+  }
+
+  .album {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #dedbd5;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .song-title {
+    font-size: 25px;
+    margin: 25px 0 8px;
+  }
+
+  .artist {
+    color: #888;
+    font-size: 15px;
+  }
+
+  .description {
+    font-size: 13px;
+    color: #777;
+    line-height: 1.7;
+    margin: 25px 0;
+  }
+
+  .youtube {
+    display: block;
+    background: #292929;
+    color: white;
+    text-decoration: none;
+    padding: 16px;
+    border-radius: 5px;
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+
+  .footer {
+    margin-top: 35px;
+    color: #aaa;
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <div class="logo">DAILY SONG</div>
+
+  <div class="date" id="date"></div>
+
+  <h1>Today's Pick</h1>
+
+  <img class="album" id="album" alt="앨범 이미지">
+
+  <h2 class="song-title" id="title"></h2>
+
+  <div class="artist" id="artist"></div>
+
+  <p class="description">
+    오늘 하루를 위한 한 곡.<br>
+    Take a moment and enjoy the music.
+  </p>
+
+  <a class="youtube" id="youtube"
+     href="#" target="_blank" rel="noopener">
+    ▶ LISTEN ON YOUTUBE
+  </a>
+
+  <div class="footer">A NEW SONG EVERY DAY</div>
+
+</div>
+
+<script>
+const songs = [
+  {
+    title: "노래 제목 1",
+    artist: "가수 이름 1",
+    image: "",
+    youtube: ""
+  },
+  {
+    title: "노래 제목 2",
+    artist: "가수 이름 2",
+    image: "",
+    youtube: ""
+  },
+  {
+    title: "노래 제목 3",
+    artist: "가수 이름 3",
+    image: "",
+    youtube: ""
+  }
+];
+
+// 한국 날짜 기준으로 오늘의 날짜 계산
+const now = new Date();
+
+const dateText = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Seoul",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit"
+}).format(now);
+
+const [year, month, day] = dateText.split("-").map(Number);
+
+// 2026년 1월 1일부터 지난 날짜 수
+const start = Date.UTC(2026, 0, 1);
+const today = Date.UTC(year, month - 1, day);
+
+const days = Math.floor((today - start) / 86400000);
+
+// 날짜에 따라 노래 선택
+const index = ((days % songs.length) + songs.length)
+  % songs.length;
+
+const song = songs[index];
+
+// 화면에 표시
+document.getElementById("date").textContent = dateText;
+
+document.getElementById("title").textContent =
+  song.title;
+
+document.getElementById("artist").textContent =
+  song.artist;
+
+document.getElementById("album").src =
+  song.image || "https://placehold.co/600x600/e0ddd7/777?text=DAILY+SONG";
+
+document.getElementById("youtube").href =
+  song.youtube ||
+  "https://www.youtube.com/results?search_query=" +
+  encodeURIComponent(song.title + " " + song.artist);
+</script>
+</body>
+</html>
